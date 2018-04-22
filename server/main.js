@@ -165,12 +165,11 @@ module.exports = app;
 /***/ (function(module, exports, __webpack_require__) {
 
 var app = __webpack_require__(/*! ../app */ "./app.ts");
-var port = normalizePort(process.env.OPENSHIFT_NODEJS_PORT || '3000');
-var ip = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
+var port = normalizePort(process.env.OUTFIT_APP_SERVICE_PORT || '3000');
 console.log('--------------------------------------------------------------');
 console.log(process.env);
 console.log('--------------------------------------------------------------');
-console.log('Host: ' + ip + ':' + port);
+console.log('Port: ' + port);
 app.set('port', port);
 /**
  * Listen on provided port, on all network interfaces.
