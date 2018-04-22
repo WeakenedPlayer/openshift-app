@@ -95,14 +95,18 @@ var cookieParser = __webpack_require__(/*! cookie-parser */ "./node_modules/cook
 var bodyParser = __webpack_require__(/*! body-parser */ "./node_modules/body-parser/index.js");
 var census_api_1 = __webpack_require__(/*! ./modules/census-api */ "./modules/census-api/index.ts");
 var census_ws_1 = __webpack_require__(/*! ./modules/census-ws */ "./modules/census-ws/index.ts");
-var cws = new census_ws_1.CensusWebsocket('ps2');
+var config = JSON.parse(process.env.OUTFIT_CONFIG);
+console.log(config);
+var target = config.OUTFIT_TARGET || [];
+var key = config.OUTFIT_CENSUS_API_KEY || 'example';
+var cws = new census_ws_1.CensusWebsocket('ps2', key);
 var log = new census_api_1.EventStream(cws);
 var loginPlayer = null;
 var logoutPlayer = null;
 log.serviceMessage$.subscribe(function (msg) { return console.log(msg); });
 log.playerLogin$.subscribe(function (msg) { loginPlayer = msg; });
 log.playerLogout$.subscribe(function (msg) { logoutPlayer = msg; });
-var filter = new census_api_1.EventFilter([], ['1']);
+var filter = new census_api_1.EventFilter(target, ['1']);
 cws.connect().then(function () {
     return log.addEvent(['PlayerLogin', 'PlayerLogout'], filter);
 }).catch(function (err) {

@@ -27,7 +27,7 @@ module.exports = ""
 /***/ "./src/app/app.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<!--The content below is only a placeholder and can be replaced.-->\n<div style=\"text-align:center\">\n  <h1>\n    Outfit Invite Helper\n  </h1>\n</div>\n<form>\n   \t<input type=\"text\" [(ngModel)]=\"name\" name=\"nameInput\">\n   \t<input type=\"password\" [(ngModel)]=\"password\" name=\"passwordInput\">\n   \t<button type=\"button\" (click)=\"onSubmit()\">login</button>\n   \t<button type=\"button\" (click)=\"onRefresh()\">refresh</button>\n   \t<button type=\"button\" (click)=\"onNoToken()\">ddddd</button>\n   \t<button type=\"button\" (click)=\"onRegister()\">reg</button>\n</form>\n"
+module.exports = "<!--The content below is only a placeholder and can be replaced.-->\n<div style=\"text-align:center\">\n  <h1>\n    Outfit App\n  </h1>\n</div>\n<form>\n   \t<input type=\"text\" [(ngModel)]=\"name\" name=\"nameInput\">\n   \t<input type=\"password\" [(ngModel)]=\"password\" name=\"passwordInput\">\n   \t<button type=\"button\" (click)=\"onSubmit()\">test</button>\n</form>\n"
 
 /***/ }),
 
