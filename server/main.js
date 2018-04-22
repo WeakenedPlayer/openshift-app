@@ -102,7 +102,7 @@ var logoutPlayer = null;
 log.serviceMessage$.subscribe(function (msg) { return console.log(msg); });
 log.playerLogin$.subscribe(function (msg) { loginPlayer = msg; });
 log.playerLogout$.subscribe(function (msg) { logoutPlayer = msg; });
-var filter = new census_api_1.EventFilter([], ['all']);
+var filter = new census_api_1.EventFilter([], ['1']);
 cws.connect().then(function () {
     return log.addEvent(['PlayerLogin', 'PlayerLogout'], filter);
 }).catch(function (err) {
@@ -167,6 +167,7 @@ module.exports = app;
 var app = __webpack_require__(/*! ../app */ "./app.ts");
 var port = normalizePort(process.env.OPENSHIFT_NODEJS_PORT || '3000');
 var ip = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
+console.log('Host: ' + ip + ':' + port);
 app.set('port', port);
 /**
  * Listen on provided port, on all network interfaces.
