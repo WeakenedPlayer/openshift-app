@@ -99,11 +99,14 @@ var cws = new census_ws_1.CensusWebsocket('ps2');
 var log = new census_api_1.EventStream(cws);
 var loginPlayer = null;
 var logoutPlayer = null;
+log.serviceMessage$.subscribe(function (msg) { return console.log(msg); });
 log.playerLogin$.subscribe(function (msg) { loginPlayer = msg; });
 log.playerLogout$.subscribe(function (msg) { logoutPlayer = msg; });
 var filter = new census_api_1.EventFilter([], ['all']);
 cws.connect().then(function () {
     return log.addEvent(['PlayerLogin', 'PlayerLogout'], filter);
+}).catch(function (err) {
+    console.log(err);
 });
 var app = express();
 //Parsers for POST data
@@ -364,7 +367,7 @@ var EventStream = /** @class */ (function () {
         //-------------------------------------------------------------------------
         // _message より派生
         //-------------------------------------------------------------------------
-        this.serviceMessage$ = this.typeFilter('serviceMessage').publish().refCount();
+        this._serviceMessage$ = this.typeFilter('serviceMessage').publish().refCount();
         this._connectionStateChanged$ = this.typeFilter('connectionStateChanged').publish().refCount();
         this._serviceStateChanged$ = this.typeFilter('serviceStateChanged').publish().refCount();
         this._heartbeat$ = this.typeFilter('heartbeat').publish().refCount();
@@ -394,10 +397,15 @@ var EventStream = /** @class */ (function () {
         this._playerLogin$ = this.filterEvent('PlayerLogin').publish().refCount();
         this._playerLogout$ = this.filterEvent('PlayerLogout').publish().refCount();
     }
-    Object.defineProperty(EventStream.prototype, "connectionStateChanged$", {
+    Object.defineProperty(EventStream.prototype, "serviceMessage$", {
         //-------------------------------------------------------------------------
         //  Getter
         //-------------------------------------------------------------------------
+        get: function () { return this._serviceMessage$; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(EventStream.prototype, "connectionStateChanged$", {
         get: function () { return this._connectionStateChanged$; },
         enumerable: true,
         configurable: true
@@ -504,7 +512,7 @@ var EventStream = /** @class */ (function () {
     // 同時にPayloadを抽出する
     //-------------------------------------------------------------------------
     EventStream.prototype.filterServiceMessage = function (memberName) {
-        return this.serviceMessage$
+        return this._serviceMessage$
             .map(function (msg) { return msg.payload; })
             .filter(function (payload) { return payload[memberName]; });
     };
@@ -520,7 +528,6 @@ var EventStream = /** @class */ (function () {
     //-------------------------------------------------------------------------
     EventStream.prototype.sendCommand = function (action, options) {
         var command = __assign({ 'service': 'event', 'action': action }, options);
-        console.log(command);
         this.ws.send(command);
     };
     //-------------------------------------------------------------------------
@@ -751,7 +758,7 @@ var WsConnection = /** @class */ (function () {
     };
     WsConnection.prototype.destroy = function () {
         var _this = this;
-        console.log('destroyed');
+        console.log('WsConnection: Destroyed.');
         return new Promise(function (resolve, reject) {
             // guard
             if (!_this.con || !_this.con.connected) {
@@ -865,16 +872,16 @@ var WebSocket = /** @class */ (function () {
             }
             // add listeners
             _this.ws.once('connect', function (con) {
-                console.info('Websocket: opened.');
+                console.log('Websocket: opened.');
                 _this.updateConnection(new ws_connection_1.WsConnection(con));
                 resolve();
             });
             _this.ws.once('connectFailed', function (err) {
-                console.error('Websocket: failed.', err);
+                console.log('Websocket: failed.', err);
                 reject(new WebSocketError.OpenFailedError(err));
             });
             _this.ws.once('close', function () {
-                console.info('Websocket: closed.');
+                console.log('Websocket: closed.');
                 _this.updateConnection(null);
             });
             _this.ws.connect(url);
@@ -892,7 +899,7 @@ var WebSocket = /** @class */ (function () {
     };
     WebSocket.prototype.send = function (data) {
         if (!this.con) {
-            throw new Error('not connected');
+            throw new Error('Not connected');
         }
         this.con.send(data);
     };
