@@ -95,9 +95,9 @@ var cookieParser = __webpack_require__(/*! cookie-parser */ "./node_modules/cook
 var bodyParser = __webpack_require__(/*! body-parser */ "./node_modules/body-parser/index.js");
 var census_api_1 = __webpack_require__(/*! ./modules/census-api */ "./modules/census-api/index.ts");
 var census_ws_1 = __webpack_require__(/*! ./modules/census-ws */ "./modules/census-ws/index.ts");
-console.log(process.env);
 var config = JSON.parse(process.env.OUTFIT_CONFIG);
-console.log(config);
+console.log(config.TARGET);
+console.log(config.CENSUS_API_KEY);
 var target = config.TARGET || [];
 var key = config.CENSUS_API_KEY || 'example';
 var cws = new census_ws_1.CensusWebsocket('ps2', key);
