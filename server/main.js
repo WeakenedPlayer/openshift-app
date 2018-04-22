@@ -95,10 +95,11 @@ var cookieParser = __webpack_require__(/*! cookie-parser */ "./node_modules/cook
 var bodyParser = __webpack_require__(/*! body-parser */ "./node_modules/body-parser/index.js");
 var census_api_1 = __webpack_require__(/*! ./modules/census-api */ "./modules/census-api/index.ts");
 var census_ws_1 = __webpack_require__(/*! ./modules/census-ws */ "./modules/census-ws/index.ts");
+console.log(process.env);
 var config = JSON.parse(process.env.OUTFIT_CONFIG);
 console.log(config);
-var target = config.OUTFIT_TARGET || [];
-var key = config.OUTFIT_CENSUS_API_KEY || 'example';
+var target = config.TARGET || [];
+var key = config.CENSUS_API_KEY || 'example';
 var cws = new census_ws_1.CensusWebsocket('ps2', key);
 var log = new census_api_1.EventStream(cws);
 var loginPlayer = null;
@@ -112,6 +113,62 @@ cws.connect().then(function () {
 }).catch(function (err) {
     console.log(err);
 });
+//ws.on( 'connect', ( wsConnection: connection ) => {
+//console.log( 'connected' );
+//
+//wsConnection.on( 'close', () => {
+//  console.log( 'closed' );
+//} );
+//
+//wsConnection.on( 'error', ( err ) => {
+//  console.log( err );
+//} );
+//
+//wsConnection.on( 'message', ( message: any ) => {
+//  // console.log( message );
+//  
+//  if( message.type === 'utf8' ) {
+//      let data: any = JSON.parse( message.utf8Data ); 
+//      
+//      if( data.type === 'serviceMessage' ) {
+//          let info: any = data.payload;
+//          let characterId: string = info.character_id;
+//          let name: string = id2name[ characterId ];
+//          let ch = getChannel();                
+//          if( ch && name ) {
+//              ch.send( 'アウトフィット参加希望の'+ name + 'さんがログインしました。');
+//          }
+//      }
+//  }
+//} );
+//
+//wsConnection.send( JSON.stringify( command ) );
+//} );
+//
+//ws.on( 'connectFailed', ( evt ) => {
+//console.log( evt );
+//} ); 
+//
+////setting
+//discordClient.on('ready', () => {
+//console.log( 'login' );
+//discordClient.fetchApplication()
+//.then( apps => {
+//  ownerId = apps.owner.id;
+//} );
+//ws.connect( url );
+//} );
+//
+//discordClient.on( 'message', ( message ) => {
+//if( message.author.id !== discordClient.user.id ) {
+//  if( ownerId === message.author.id ) {
+//      if( message.content === 'start' ) {
+//          channel = message.channel as Discord.TextChannel;
+//          console.log( 'start...channel id: ' + channel.id );
+//      }
+//  }
+//}
+//} );
 var app = express();
 //Parsers for POST data
 if (true) {
