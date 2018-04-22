@@ -167,6 +167,9 @@ module.exports = app;
 var app = __webpack_require__(/*! ../app */ "./app.ts");
 var port = normalizePort(process.env.OPENSHIFT_NODEJS_PORT || '3000');
 var ip = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
+console.log('--------------------------------------------------------------');
+console.log(process.env);
+console.log('--------------------------------------------------------------');
 console.log('Host: ' + ip + ':' + port);
 app.set('port', port);
 /**
